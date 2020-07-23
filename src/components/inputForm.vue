@@ -1,6 +1,6 @@
 <template>
   <form class="input-form">
-    <div class="form-group">
+    <!-- <div class="form-group">
       日期：<input type="date" v-model="refuelingForm.date">
     </div>
     <div class="form-group">
@@ -11,7 +11,8 @@
     </div>
     <div class="form-group">
       目前里程：<input type="number" v-model="refuelingForm.kilometers">KM
-    </div>
+    </div> -->
+    <textarea name="" id="" cols="30" rows="10" v-model="lazyInput"></textarea>
     <div class="form-group">
       <button @click.prevent="send">送出</button>
     </div>
@@ -28,17 +29,32 @@ export default {
   },
   extends: exPage,
   data:() => ({
+    lazyMode: true,
     refuelingForm: {
       date: '',
       amount: '',
       gasoline: '',
       kilometers: '',
     },
+    lazyInput: '',
   }),
   methods:{
     send(){
-      const data = this.deepClone(this.refuelingForm)
-      this.$emit('childMethod', data)
+      if(this.lazyMode){
+        let textAreaInput = this.lazyInput.replace(/\n/g,';');
+        let arr = textAreaInput.split(";");
+        const data = {
+          date: arr[0],
+          amount: arr[1],
+          gasoline: arr[2],
+          kilometers: arr[3],
+        }
+        console.log(data)
+        this.$emit('childMethod', data)
+      }else{
+        const data = this.deepClone(this.refuelingForm)
+        this.$emit('childMethod', data)
+      }
     },
   },
 }
