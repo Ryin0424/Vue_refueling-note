@@ -10,6 +10,7 @@
 import exPage from './components/exPage.vue';
 import inputForm from './components/inputForm.vue'
 import list from './components/list.vue'
+import refuelingData from './assets/test.json'
 
 export default {
   name: 'App',
@@ -19,26 +20,7 @@ export default {
     list,
   },
   data:() => ({
-    refuelingArray: [
-      {
-        date: '2019-01-01',
-        amount: 100,
-        gasoline: 3.22,
-        kilometers: 1500,
-      },
-      {
-        date: '2020-09-09',
-        amount: 79,
-        gasoline: 5.51,
-        kilometers: 500000,
-      },
-      {
-        date: '2019-12-29',
-        amount: 113,
-        gasoline: 4.09,
-        kilometers: 15000,
-      },
-    ],
+    refuelingArray: refuelingData,
   }),
   computed:{
     sortArray(){
@@ -49,7 +31,7 @@ export default {
       let ary = this.refuelingArray
       // sort by Obj value
       // note by https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
-      let newArray = ary.sort((a,b) => (a.kilometers > b.kilometers) ? 1 : ((b.kilometers > a.kilometers) ? -1 : 0));
+      let newArray = ary.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
       return newArray.reverse()
     },
   },

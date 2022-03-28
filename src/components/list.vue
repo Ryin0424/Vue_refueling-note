@@ -1,12 +1,14 @@
 <template>
   <ul class="list">
-    <li v-for="(item, index) in refuelingList" :key="index" @dblclick="editItem(index, item)" class="card">
+    <li v-for="(item, index) in refuelingList" :key="index"
+        v-touch:swipe="swipeHandler"
+        @dblclick="editItem(index, item)" class="card">
       <div class="info-group" v-if="nowEditing !== index">
         <div>日期：{{item.date}}</div>
         <div>金額：{{item.amount}}</div>
         <div>加油量：{{item.gasoline}}L</div>
-        <div>當前里程：{{item.kilometers}}</div>
-        <div>本次油耗比：{{fuelConsumption(index, item.kilometers, item.gasoline)}} Km/L</div>
+        <div>當前里程：{{item.km}}</div>
+        <div>本次油耗比：{{fuelConsumption(index, item.km, item.gasoline)}} Km/L</div>
       </div>
       <div class="info-group" v-else>
         <div class="form-group">
@@ -19,9 +21,9 @@
           汽油：<input type="number" step="0.01" v-model="editData.gasoline"> L
         </div>
         <div class="form-group">
-          目前里程：<input type="number" v-model="editData.kilometers">KM
+          目前里程：<input type="number" v-model="editData.km">KM
         </div>
-        <div>本次油耗比：{{fuelConsumption(index, editData.kilometers, editData.gasoline)}} Km/L</div>
+        <div>本次油耗比：{{fuelConsumption(index, editData.km, editData.gasoline)}} Km/L</div>
       </div>
       <div class="btn-group">
         <button class="btn btn-success" @click.prevent="endEdit(index)" v-show="nowEditing === index">完成</button>
@@ -50,18 +52,30 @@ export default {
       date: '',
       amount: '',
       gasoline: '',
-      kilometers: '',
+      km: '',
     },
   }),
   methods:{
     // 計算油耗比（每公升跑幾公里）
     fuelConsumption(index, nowKm, gasoline){
       if(this.refuelingList[index+1] !== undefined){
-        let drivingKm = nowKm - this.refuelingList[index+1].kilometers
-        return Math.round( (drivingKm/gasoline) * 100) / 100
+        if(this.refuelingList[index+1].km === null){
+          let drivingKm = nowKm - this.refuelingList[index+2].km
+          let nowGasoline = gasoline + this.refuelingList[index+1].gasoline
+          return Math.round( (drivingKm/nowGasoline) * 100) / 100
+        }
+        if(nowKm !== null){ // 若本次里程不是空值
+          let drivingKm = nowKm - this.refuelingList[index+1].km
+          return Math.round( (drivingKm/gasoline) * 100) / 100
+        }
       }else{
         return '--'
       }
+    },
+
+    swipeHandler (direction) {
+      alert(direction)
+      console.log(direction)  // May be left / right / top / bottom
     },
 
     editItem(index, item){
