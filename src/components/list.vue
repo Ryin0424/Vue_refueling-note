@@ -1,33 +1,36 @@
 <template>
   <ul class="list">
     <li v-for="(item, index) in refuelingList" :key="index"
-        v-touch:swipe="swipeHandler"
-        @dblclick="editItem(index, item)" class="card">
-      <div class="info-group" v-if="nowEditing !== index">
-        <div>日期：{{item.date}}</div>
-        <div>金額：{{item.amount}}</div>
-        <div>加油量：{{item.gasoline}}L</div>
-        <div>當前里程：{{item.km}}</div>
-        <div>本次油耗比：{{fuelConsumption(index, item.km, item.gasoline)}} Km/L</div>
-      </div>
-      <div class="info-group" v-else>
-        <div class="form-group">
-          日期：<input type="date" v-model="editData.date">
+        v-touch:swipe="swipeHandler(index)"
+        @dblclick="editItem(index, item)"
+        class="card"
+        :class="[{'card-edit': nowEditing === index}, {'card-delete': nowDeleting === index}]">
+        <div class="info-group" v-if="nowEditing !== index">
+          <div>日期：{{item.date}}</div>
+          <div>金額：{{item.amount}}</div>
+          <div>加油量：{{item.gasoline}}L</div>
+          <div>當前里程：{{item.km}}</div>
+          <div>本次油耗比：{{fuelConsumption(index, item.km, item.gasoline)}} Km/L</div>
         </div>
-        <div class="form-group">
-          金額：<input type="number" v-model="editData.amount">
+        <div class="info-group" v-else>
+          <div class="form-group">
+            日期：<input type="date" v-model="editData.date">
+          </div>
+          <div class="form-group">
+            金額：<input type="number" v-model="editData.amount">
+          </div>
+          <div class="form-group">
+            汽油：<input type="number" step="0.01" v-model="editData.gasoline"> L
+          </div>
+          <div class="form-group">
+            目前里程：<input type="number" v-model="editData.km">KM
+          </div>
+          <div>本次油耗比：{{fuelConsumption(index, editData.km, editData.gasoline)}} Km/L</div>
         </div>
-        <div class="form-group">
-          汽油：<input type="number" step="0.01" v-model="editData.gasoline"> L
-        </div>
-        <div class="form-group">
-          目前里程：<input type="number" v-model="editData.km">KM
-        </div>
-        <div>本次油耗比：{{fuelConsumption(index, editData.km, editData.gasoline)}} Km/L</div>
-      </div>
       <div class="btn-group">
         <button class="btn btn-success" @click.prevent="endEdit(index)" v-show="nowEditing === index">完成</button>
-        <button class="btn btn-danger" @click.prevent="deleteItem(index)">刪除</button>
+        <button class="btn btn-" @click.prevent="cancelEdit(index)" v-show="nowEditing === index">取消</button>
+        <!-- <button class="btn btn-danger" @click.prevent="deleteItem(index)">刪除</button> -->
       </div>
     </li>
   </ul>
@@ -48,6 +51,7 @@ export default {
   extends: exPage,
   data:() => ({
     nowEditing: null, // 修改中項目的 Array index
+    nowDeleting: null, // 進入刪除確認的 Array index
     editData: {
       date: '',
       amount: '',
@@ -73,10 +77,19 @@ export default {
       }
     },
 
-    swipeHandler (direction) {
-      alert(direction)
-      console.log(direction)  // May be left / right / top / bottom
+    swipeHandler (index) {
+      return function(dir) {
+        console.log(dir, index);
+        if(dir === 'left'){
+          this.nowDeleting = index;
+        }
+      }
     },
+
+    // swipeHandler (direction) {
+    //   alert(direction)
+    //   console.log(direction)  // May be left / right / top / bottom
+    // },
 
     editItem(index, item){
       this.nowEditing = index
@@ -111,24 +124,21 @@ li.card {
   display: flex;
   border: 1px solid gray;
   justify-content: center;
-  width: 375px;
+  width: 360px;
   height: 120px;
   margin: 15px auto;
+  transition: width ease .3s, height ease .6s;
   position: relative;
   overflow: hidden;
-  &:hover{
-    .btn-group{
-      left: 325px;
-    }
-  }
 }
 .btn-group{
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 375px;
-  height: 120px;
-  width: 50px;
+  top: 0;
+  left: 360px;
+  height: 162px;
+  width: 40px;
   background-color: #c5c5c5;
   transition: all .3s;
   > .btn{
@@ -148,5 +158,12 @@ li.card {
 }
 a {
   color: #42b983;
+}
+
+
+li.card-edit{
+  width: 400px;
+  height: 150px;
+  transition: width ease .3s, height ease .6s;
 }
 </style>

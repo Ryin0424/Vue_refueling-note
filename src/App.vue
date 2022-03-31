@@ -8,9 +8,9 @@
 
 <script>
 import exPage from './components/exPage.vue';
-import inputForm from './components/inputForm.vue'
-import list from './components/list.vue'
-import refuelingData from './assets/test.json'
+import inputForm from './components/inputForm.vue';
+import list from './components/list.vue';
+import refuelingData from './assets/test.json';
 
 export default {
   name: 'App',
@@ -44,7 +44,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+$dark-main-background-color: #3451A1;
+$dark-main-color: #091955;
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -52,6 +54,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 30px;
-  margin: 0 -8px;
+  margin: -8px;
+  background-color: $dark-main-background-color;
+  .card{
+    border-radius: 15px;
+    background-color: $dark-main-color;
+    padding: 5px 0;
+    color: #fff;
+  }
 }
 </style>
