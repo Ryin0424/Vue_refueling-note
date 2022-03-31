@@ -10,26 +10,25 @@
           <div>金額：{{item.amount}}</div>
           <div>加油量：{{item.gasoline}}L</div>
           <div>當前里程：{{item.km}}</div>
-          <div>本次油耗比：{{fuelConsumption(index, item.km, item.gasoline)}} Km/L</div>
+          <div class="text-green">本次油耗比：{{fuelConsumption(index, item.km, item.gasoline)}} Km/L</div>
         </div>
-        <div class="info-group" v-else>
-          <div class="form-group">
+        <div class="form-group" v-else>
+          <div class="form-input">
             日期：<input type="date" v-model="editData.date">
           </div>
-          <div class="form-group">
+          <div class="form-input">
             金額：<input type="number" v-model="editData.amount">
           </div>
-          <div class="form-group">
+          <div class="form-input">
             汽油：<input type="number" step="0.01" v-model="editData.gasoline"> L
           </div>
-          <div class="form-group">
-            目前里程：<input type="number" v-model="editData.km">KM
+          <div class="form-input">
+            里程：<input type="number" v-model="editData.km"> KM
           </div>
-          <div>本次油耗比：{{fuelConsumption(index, editData.km, editData.gasoline)}} Km/L</div>
         </div>
       <div class="btn-group">
         <button class="btn btn-success" @click.prevent="endEdit(index)" v-show="nowEditing === index">完成</button>
-        <button class="btn btn-" @click.prevent="cancelEdit(index)" v-show="nowEditing === index">取消</button>
+        <button class="btn btn-" @click.prevent="clearEdit(index)" v-show="nowEditing === index">取消</button>
         <!-- <button class="btn btn-danger" @click.prevent="deleteItem(index)">刪除</button> -->
       </div>
     </li>
@@ -49,7 +48,11 @@ export default {
     }
   },
   extends: exPage,
+  mounted(){
+    this.listAtComponent = this.deepClone(this.refuelingList)
+  },
   data:() => ({
+    listAtComponent: [],
     nowEditing: null, // 修改中項目的 Array index
     nowDeleting: null, // 進入刪除確認的 Array index
     editData: {
@@ -62,19 +65,24 @@ export default {
   methods:{
     // 計算油耗比（每公升跑幾公里）
     fuelConsumption(index, nowKm, gasoline){
-      if(this.refuelingList[index+1] !== undefined){
-        if(this.refuelingList[index+1].km === null){
-          let drivingKm = nowKm - this.refuelingList[index+2].km
-          let nowGasoline = gasoline + this.refuelingList[index+1].gasoline
+      if(this.listAtComponent[index+1] !== undefined){
+        if(this.listAtComponent[index+1].km === null){
+          let drivingKm = nowKm - this.listAtComponent[index+2].km
+          let nowGasoline = gasoline + this.listAtComponent[index+1].gasoline
           return Math.round( (drivingKm/nowGasoline) * 100) / 100
         }
         if(nowKm !== null){ // 若本次里程不是空值
-          let drivingKm = nowKm - this.refuelingList[index+1].km
+          let drivingKm = nowKm - this.listAtComponent[index+1].km
           return Math.round( (drivingKm/gasoline) * 100) / 100
         }
       }else{
         return '--'
       }
+    },
+    // 計算歷史油價
+    calcHistoricalOilPrices(amount, gasoline){
+      // 取至小數點後兩位
+      return Math.round(amount / gasoline * 100) / 100;
     },
 
     swipeHandler (index) {
@@ -97,16 +105,29 @@ export default {
     },
 
     endEdit(index){
-      this.refuelingList[index] = this.editData
-      this.nowEditing = null
+      this.listAtComponent[index] = this.editData
+      this.dataUpdate(this.listAtComponent)
+      this.clearEdit()
     },
 
-    cancelEdit(){
+    clearEdit(){
+      this.editData = {
+        date: '',
+        amount: '',
+        gasoline: '',
+        km: '',
+      }
       this.nowEditing = null
     },
 
     deleteItem(index){
-      this.refuelingList.splice(index, 1)
+      this.listAtComponent.splice(index, 1)
+    },
+
+    // 任何在 component 內改動的資料，傳回父層
+    dataUpdate(data){
+      console.log('emit')
+      this.$emit('dataFromComponent', data)
     },
   },
 }
@@ -124,7 +145,7 @@ li.card {
   display: flex;
   border: 1px solid gray;
   justify-content: center;
-  width: 360px;
+  width: 355px;
   height: 120px;
   margin: 15px auto;
   transition: width ease .3s, height ease .6s;
@@ -136,10 +157,10 @@ li.card {
   flex-direction: column;
   position: absolute;
   top: 0;
-  left: 360px;
-  height: 162px;
+  left: 337px;
+  height: 192px;
   width: 40px;
-  background-color: #c5c5c5;
+  // background-color: #c5c5c5;
   transition: all .3s;
   > .btn{
     min-height: 60px;
@@ -159,11 +180,28 @@ li.card {
 a {
   color: #42b983;
 }
+.text-green{
+  color: #7bf71e;
+}
 
 
 li.card-edit{
-  width: 400px;
-  height: 150px;
+  width: 375px;
+  height: 180px;
   transition: width ease .3s, height ease .6s;
+  .form-group{
+    text-align: left;
+    .form-input{
+      margin: 8px 0;
+      input{
+        border: 1px solid #b5b5b5;
+        border-radius: 4px;
+        height: 30px;
+        width: 165px;
+        text-align: center;
+        font-size: 15px;
+      }
+    }
+  }
 }
 </style>

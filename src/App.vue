@@ -1,8 +1,12 @@
 <template>
   <div id="app">
+    <!-- <router-link to="/">Home</router-link>
+    <router-link to="/login">Login</router-link>
+
+    <router-view /> -->
     <img alt="Vue logo" src="./assets/logo.png">
     <inputForm @childMethod="receiveSubmit"/>
-    <list :refuelingList="sortArray" />
+    <list :refuelingList="sortArray" @update="updateInfo"/>
   </div>
 </template>
 
@@ -11,6 +15,7 @@ import exPage from './components/exPage.vue';
 import inputForm from './components/inputForm.vue';
 import list from './components/list.vue';
 import refuelingData from './assets/test.json';
+
 
 export default {
   name: 'App',
@@ -39,6 +44,10 @@ export default {
     receiveSubmit(data){
       console.log('origin:', this.refuelingArray)
       this.refuelingArray.push(data)
+    },
+    updateInfo(data){
+      this.refuelingArray
+      console.log(data);
     },
   },
 }
