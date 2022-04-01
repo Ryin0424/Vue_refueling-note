@@ -5,15 +5,17 @@
 
     <router-view /> -->
     <img alt="Vue logo" src="./assets/logo.png">
-    <inputForm @childMethod="receiveSubmit"/>
-    <list :refuelingList="sortArray" @update="updateInfo"/>
+    <div>Welcomd, guest!</div>
+    <inputForm @childMethod="receiveSubmit" style="display:none;" />
+    <List :refuelingList="sortArray" @update="updateInfo"/>
+    <button class="add" > + </button>
   </div>
 </template>
 
 <script>
 import exPage from './components/exPage.vue';
 import inputForm from './components/inputForm.vue';
-import list from './components/list.vue';
+import List from './components/List.vue';
 import refuelingData from './assets/test.json';
 
 
@@ -22,7 +24,7 @@ export default {
   extends: exPage,
   components: {
     inputForm,
-    list,
+    List,
   },
   data:() => ({
     refuelingArray: refuelingData,
@@ -46,8 +48,8 @@ export default {
       this.refuelingArray.push(data)
     },
     updateInfo(data){
-      this.refuelingArray
       console.log(data);
+      this.refuelingArray = data;
     },
   },
 }
@@ -65,6 +67,21 @@ $dark-main-color: #091955;
   margin-top: 30px;
   margin: -8px;
   background-color: $dark-main-background-color;
+  position: relative;
+  .add{
+    position: fixed;
+    bottom: 35px;
+    right: 15px;
+    background-color: #EA08FF;
+    color: #e2e2e2;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    border-radius: 50%;
+    border: none;
+    // border: 1px solid #e2e2e2;
+
+  }
   .card{
     border-radius: 15px;
     background-color: $dark-main-color;

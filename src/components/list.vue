@@ -5,14 +5,14 @@
         @dblclick="editItem(index, item)"
         class="card"
         :class="[{'card-edit': nowEditing === index}, {'card-delete': nowDeleting === index}]">
-        <div class="info-group" v-if="nowEditing !== index">
+        <div class="info-group" v-show="nowEditing !== index && nowDeleting !== index">
           <div>日期：{{item.date}}</div>
           <div>金額：{{item.amount}}</div>
           <div>加油量：{{item.gasoline}}L</div>
           <div>當前里程：{{item.km}}</div>
-          <div class="text-green">本次油耗比：{{fuelConsumption(index, item.km, item.gasoline)}} Km/L</div>
+          <div class="text-green">本次油耗比：{{fuelConsumption(refuelingList, index, item.km, item.gasoline)}} Km/L</div>
         </div>
-        <div class="form-group" v-else>
+        <div class="form-group" v-show="nowEditing === index">
           <div class="form-input">
             日期：<input type="date" v-model="editData.date">
           </div>
@@ -25,19 +25,26 @@
           <div class="form-input">
             里程：<input type="number" v-model="editData.km"> KM
           </div>
+          <div class="btn-group edit-group">
+            <button class="btn btn-success" @click.prevent="endEdit(index)" v-show="nowEditing === index">完成</button>
+            <button class="btn btn-github" @click.prevent="clearEdit(index)" v-show="nowEditing === index">取消</button>
+          </div>
         </div>
-      <div class="btn-group">
-        <button class="btn btn-success" @click.prevent="endEdit(index)" v-show="nowEditing === index">完成</button>
-        <button class="btn btn-" @click.prevent="clearEdit(index)" v-show="nowEditing === index">取消</button>
-        <!-- <button class="btn btn-danger" @click.prevent="deleteItem(index)">刪除</button> -->
-      </div>
+        <div class="" v-show="nowDeleting === index">
+          <font-awesome-icon icon="fa-solid fa-trash-can"/>  <span>確定要刪除此項紀錄嗎？</span>
+          <div class="btn-group delete-group">
+            <button class="btn btn-custom btn-danger" @click.prevent="deleteItem(index)">確定</button>
+            <button class="btn btn-custom btn-success" @click.prevent="cancelDelete">取消</button>
+          </div>
+        </div>
     </li>
   </ul>
 </template>
 
 
 <script>
-import exPage from '../components/exPage.vue';
+import exPage from './exPage.vue';
+import Calculator from '../mixins/Calculator.js';
 
 export default {
   name: 'list',
@@ -48,6 +55,9 @@ export default {
     }
   },
   extends: exPage,
+  mixins: [
+    Calculator
+  ],
   mounted(){
     this.listAtComponent = this.deepClone(this.refuelingList)
   },
@@ -63,35 +73,19 @@ export default {
     },
   }),
   methods:{
-    // 計算油耗比（每公升跑幾公里）
-    fuelConsumption(index, nowKm, gasoline){
-      if(this.listAtComponent[index+1] !== undefined){
-        if(this.listAtComponent[index+1].km === null){
-          let drivingKm = nowKm - this.listAtComponent[index+2].km
-          let nowGasoline = gasoline + this.listAtComponent[index+1].gasoline
-          return Math.round( (drivingKm/nowGasoline) * 100) / 100
-        }
-        if(nowKm !== null){ // 若本次里程不是空值
-          let drivingKm = nowKm - this.listAtComponent[index+1].km
-          return Math.round( (drivingKm/gasoline) * 100) / 100
-        }
-      }else{
-        return '--'
-      }
-    },
-    // 計算歷史油價
-    calcHistoricalOilPrices(amount, gasoline){
-      // 取至小數點後兩位
-      return Math.round(amount / gasoline * 100) / 100;
-    },
-
     swipeHandler (index) {
       return function(dir) {
         console.log(dir, index);
-        if(dir === 'left'){
-          this.nowDeleting = index;
+        if (this.nowDeleting !== index && dir === 'left') {
+          if (this.nowEditing === index) return;
+          this.nowDeleting = index
+          // if (this.nowDeleting === index && dir === 'left') {
+          //   this.deleteItem(index)
+          // }
+        } else if (this.nowDeleting === index && dir === 'right') {
+          this.nowDeleting = null
         }
-      }
+      }.bind(this)
     },
 
     // swipeHandler (direction) {
@@ -100,6 +94,7 @@ export default {
     // },
 
     editItem(index, item){
+      if(this.nowDeleting === index) return;
       this.nowEditing = index
       this.editData = this.deepClone(item)
     },
@@ -121,13 +116,21 @@ export default {
     },
 
     deleteItem(index){
+      console.log('del', index)
+      this.nowDeleting = null
+      this.clearEdit()
       this.listAtComponent.splice(index, 1)
+      this.dataUpdate(this.listAtComponent)
+    },
+
+    cancelDelete(){
+      this.nowDeleting = null;
     },
 
     // 任何在 component 內改動的資料，傳回父層
     dataUpdate(data){
       console.log('emit')
-      this.$emit('dataFromComponent', data)
+      this.$emit('update', data)
     },
   },
 }
@@ -151,21 +154,6 @@ li.card {
   transition: width ease .3s, height ease .6s;
   position: relative;
   overflow: hidden;
-}
-.btn-group{
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 337px;
-  height: 192px;
-  width: 40px;
-  // background-color: #c5c5c5;
-  transition: all .3s;
-  > .btn{
-    min-height: 60px;
-    height: 120px;
-  }
 }
 .btn-success{
   color: #fff;
@@ -202,6 +190,41 @@ li.card-edit{
         font-size: 15px;
       }
     }
+    .edit-group{
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      left: 337px;
+      height: 192px;
+      width: 40px;
+      // background-color: #c5c5c5;
+      transition: all .3s;
+      > .btn{
+        min-height: 60px;
+        height: 120px;
+      }
+    }
   }
+}
+li.card-delete{
+  width: 250px;
+  height: 65px;
+  transition: width ease .3s, height ease .6s;
+  span{
+    margin-left: 15px;
+  }
+  .delete-group{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+  }
+}
+
+.btn-custom{
+  border-radius: 50px;
+  width: 50px;
+  height: 25px;
+  border: none;
 }
 </style>
