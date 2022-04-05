@@ -55,13 +55,12 @@ export default {
     listAtComponent: [],
     nowEditing: null, // 修改中項目的 Array index
     nowDeleting: null, // 進入刪除確認的 Array index
-    // editData: {
-    //   date: '',
-    //   amount: '',
-    //   gasoline: '',
-    //   km: '',
-    // },
   }),
+  watch:{
+    refuelingList(){
+      this.listAtComponent = this.deepClone(this.refuelingList)
+    },
+  },
   methods:{
     swipeHandler (index) {
       return function(dir) {

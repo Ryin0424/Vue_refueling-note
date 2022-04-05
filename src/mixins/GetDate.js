@@ -14,6 +14,15 @@ const GetDate = {
       return (Date.parse(time)).valueOf();
     },
 
+    searchDayRange(searchValue, data) {
+      let start = this.timeToString(searchValue.start)
+      let end = this.timeToString(searchValue.end)
+      const answer = data.filter( item => {
+        return this.timeToString(item.date) >= start && this.timeToString(item.date) <= end
+      })
+      return answer
+    }
+
   },
 };
 export default GetDate;

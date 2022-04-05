@@ -1,10 +1,35 @@
 <template>
   <div class="info-group">
-    <div>日期：{{cardData.date}}</div>
-    <div>金額：{{cardData.amount}}</div>
-    <div>加油量：{{cardData.gasoline}}L</div>
-    <div>當前里程：{{cardData.km}}</div>
-    <div class="text-green">本次油耗比：{{fuelConsumption(refuelingList, index, cardData.km, cardData.gasoline)}} Km/L</div>
+    <div class="card-item">
+      <div class="title">
+        <div class="icon"><font-awesome-icon icon="fa-solid fa-calendar-check" /></div>
+        日期
+      </div>
+      {{cardData.date}}
+    </div>
+    <div class="card-item">
+      <div class="title">
+        <div class="icon"><font-awesome-icon icon="fa-solid fa-dollar-sign" /></div>
+        金額
+      </div>{{cardData.amount}}
+    </div>
+    <div class="card-item">
+      <div class="title">
+        <div class="icon"><font-awesome-icon icon="fa-solid fa-gas-pump" /></div>
+        加油量
+      </div>
+      {{cardData.gasoline}} L
+    </div>
+    <div class="card-item">
+      <div class="title">
+        <div class="icon"><font-awesome-icon icon="fa-solid fa-car-side" /></div>
+        目前里程
+      </div>
+      {{cardData.km}}
+    </div>
+    <div class="card-item text-green">
+      <div class="title">本次油耗比</div>
+      {{fuelConsumption(refuelingList, index, cardData.km, cardData.gasoline)}} Km/L</div>
   </div>
 </template>
 
@@ -49,80 +74,29 @@ li.card {
   width: 355px;
   height: 120px;
   margin: 15px auto;
+  text-align: start;
   transition: width ease .3s, height ease .6s;
   position: relative;
   overflow: hidden;
+
+  .info-group{
+    text-align: start;
+    margin: auto 0;
+  }
+
+  .card-item{
+    .title{
+      display: inline-block;
+      width: 110px;
+    }
+  }
 }
-.btn-success{
-  color: #fff;
-  background-color: #00a65a;
-  border-color: #008d4c;
-}
-.btn-danger{
-  color: #fff;
-  background-color: #dd4b39;
-  border-color: #d73925;
-}
-a {
-  color: #42b983;
+
+.icon{
+  width: 20px;
+  display: inline-block;
 }
 .text-green{
   color: #7bf71e;
-}
-
-
-li.card-edit{
-  width: 375px;
-  height: 180px;
-  transition: width ease .3s, height ease .6s;
-  .form-group{
-    text-align: left;
-    .form-input{
-      margin: 8px 0;
-      input{
-        border: 1px solid #b5b5b5;
-        border-radius: 4px;
-        height: 30px;
-        width: 165px;
-        text-align: center;
-        font-size: 15px;
-      }
-    }
-    .edit-group{
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: 0;
-      left: 337px;
-      height: 192px;
-      width: 40px;
-      // background-color: #c5c5c5;
-      transition: all .3s;
-      > .btn{
-        min-height: 60px;
-        height: 120px;
-      }
-    }
-  }
-}
-li.card-delete{
-  width: 250px;
-  height: 65px;
-  transition: width ease .3s, height ease .6s;
-  span{
-    margin-left: 15px;
-  }
-  .delete-group{
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
-  }
-}
-
-.btn-custom{
-  border-radius: 50px;
-  width: 50px;
-  height: 25px;
-  border: none;
 }
 </style>
