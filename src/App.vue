@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <!-- <router-link to="/">Home</router-link>
-    <router-link to="/login">Login</router-link>
-
-    <router-view /> -->
-
-    <TopMenu></TopMenu>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <div>Welcomd, guest!</div>
-    <inputForm @childMethod="receiveSubmit" style="display:none;" />
-    <list :refuelingList="sortArray" @update="updateInfo"/>
-    <button class="add" > + </button>
+    <div class="main-side"
+        :class="{'main-side-move': open}">
+      <TopMenu class="top-menu"
+                @toggleMenu="toggleMenu"
+                :open="open" />
+      <div style="padding-top: 40px;">
+        <img alt="Vue logo" src="./assets/logo.png">
+        <!-- <div>Welcomd, guest!</div> -->
+        <inputForm @childMethod="receiveSubmit" style="display:none;" />
+        <list :refuelingList="sortArray" @update="updateInfo"/>
+        <button class="add" > + </button>
+      </div>
+    </div>
+    <Personal class="setting-side" />
   </div>
 </template>
 
@@ -18,6 +21,7 @@
 import exPage from '@/components/exPage.vue';
 import inputForm from '@/components/inputForm.vue';
 import TopMenu from '@/views/Menu.vue';
+import Personal from '@/views/Personal.vue';
 import list from '@/components/list.vue';
 import refuelingData from '@/assets/test.json';
 
@@ -27,11 +31,13 @@ export default {
   extends: exPage,
   components: {
     TopMenu,
+    Personal,
     inputForm,
     list,
   },
   data:() => ({
     refuelingArray: refuelingData,
+    open: false,
   }),
   computed:{
     sortArray(){
@@ -47,6 +53,10 @@ export default {
     },
   },
   methods:{
+    toggleMenu(boolean){
+      this.open = boolean
+      console.log('menu', this.open)
+    },
     receiveSubmit(data){
       console.log('origin:', this.refuelingArray)
       this.refuelingArray.push(data)
@@ -70,25 +80,41 @@ $dark-main-color: #091955;
   color: #2c3e50;
   margin-top: 30px;
   margin: -8px;
-  background-color: $dark-main-background-color;
-  position: relative;
-  .add{
-    position: fixed;
-    bottom: 30px;
-    right: 15px;
-    background-color: #EA08FF;
-    color: #e2e2e2;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    border-radius: 50%;
-    border: none;
+  overflow: hidden;
+  .main-side{
+    background-color: $dark-main-background-color;
+    position: relative;
+    right: 0;
+    transition: all ease 1s;
+    .top-menu{
+      background-color: $dark-main-background-color;
+    }
+    .add{
+      position: fixed;
+      bottom: 30px;
+      right: 15px;
+      background-color: #EA08FF;
+      color: #e2e2e2;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      border-radius: 50%;
+      border: none;
+    }
+    .card{
+      border-radius: 15px;
+      background-color: $dark-main-color;
+      padding: 5px 0;
+      color: #fff;
+    }
   }
-  .card{
-    border-radius: 15px;
+  .main-side-move{
+    right: -320px;
+    transition: all ease 1s;
+
+  }
+  .setting-side{
     background-color: $dark-main-color;
-    padding: 5px 0;
-    color: #fff;
   }
 }
 </style>
