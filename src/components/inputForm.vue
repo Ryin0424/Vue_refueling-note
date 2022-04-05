@@ -1,45 +1,64 @@
 <template>
   <form class="form-group">
-    <div class="date-group">
-      <button class="btn btn-custom btn-custom-lg"
-              :class="{'active': notToday === false}"
-              @click.prevent="setToday">
-              <font-awesome-icon icon="fa-solid fa-calendar" />  <span>今日</span>
+    <div class="top-side">
+      <div class="date-group">
+        <button class="btn btn-custom btn-custom-lg"
+                :class="{'active': notToday === false}"
+                @click.prevent="setToday">
+                <font-awesome-icon icon="fa-solid fa-calendar" />  <span>今日</span>
+        </button>
+        <button class="btn btn-custom"
+                :class="{'active': notToday === true}"
+                title="選取其他"
+                @click.prevent="anotherDay">
+                <font-awesome-icon icon="fa-solid fa-calendar-days" />
+        </button>
+      </div>
+      <div class="form-input" v-if="notToday">
+        <label for="date">
+          <div class="icon"><font-awesome-icon icon="fa-solid fa-calendar-check" /></div>
+          日期
+        </label>
+        <input type="date"
+                :max="getToday()"
+                id="date"
+                v-model="refuelingForm.date">
+      </div>
+      <div class="form-input">
+        <label for="amount">
+          <div class="icon"><font-awesome-icon icon="fa-solid fa-dollar-sign" /></div>
+          金額
+        </label>
+        <input type="number"
+                id="amount"
+                v-model="refuelingForm.amount">
+      </div>
+      <div class="form-input">
+        <label for="gasoline">
+          <div class="icon"><font-awesome-icon icon="fa-solid fa-gas-pump" /></div>
+          汽油
+        </label>
+        <input type="number" step="0.01"
+                id="gasoline"
+                v-model="refuelingForm.gasoline"> L
+      </div>
+      <div class="form-input">
+        <label for="km">
+          <div class="icon"><font-awesome-icon icon="fa-solid fa-car-side" /></div>
+          里程
+        </label>
+        <input type="number"
+                :min="lastKM"
+                id="km"
+                v-model="refuelingForm.km"> KM
+      </div>
+    </div>
+    <div class="bottom-side">
+      <button class="btn btn-custom btn-custom-xl send-btn"
+              @click.prevent="send">
+              送出 <font-awesome-icon icon="fa-solid fa-angle-up" />
       </button>
-      <button class="btn btn-custom"
-              :class="{'active': notToday === true}"
-              title="選取其他"
-              @click.prevent="anotherDay">
-              <font-awesome-icon icon="fa-solid fa-calendar-days" />
-      </button>
     </div>
-    <div class="form-input" v-if="notToday">
-      <div class="icon"><font-awesome-icon icon="fa-solid fa-calendar-check" /></div>
-      日期
-      <input type="date" v-model="refuelingForm.date"
-              :max="getToday()">
-    </div>
-    <div class="form-input">
-      <div class="icon"><font-awesome-icon icon="fa-solid fa-dollar-sign" /></div>
-      金額
-      <input type="number" v-model="refuelingForm.amount">
-    </div>
-    <div class="form-input">
-      <div class="icon"><font-awesome-icon icon="fa-solid fa-gas-pump" /></div>
-      汽油
-      <input type="number" step="0.01" v-model="refuelingForm.gasoline"> L
-    </div>
-    <div class="form-input">
-      <div class="icon"><font-awesome-icon icon="fa-solid fa-car-side" /></div>
-      里程
-      <input type="number" v-model="refuelingForm.km"
-              :min="lastKM"> KM
-    </div>
-
-    <button class="btn btn-custom btn-custom-xl send-btn"
-            @click.prevent="send">
-            送出 <font-awesome-icon icon="fa-solid fa-angle-up" />
-    </button>
   </form>
 </template>
 
@@ -88,10 +107,18 @@ export default {
     height: calc(100vh - 250px);
     position: relative;
     width: 330px;
-    margin-top: 150px;
+    margin-top: 140px;
     margin-left: auto;
     margin-right: auto;
-    // border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .bottom-side{
+      display: flex;
+      justify-content: flex-end;
+    }
+
     .form-input{
       margin: 20px 0;
       color: #fff;
@@ -144,9 +171,6 @@ export default {
     width: 120px;
   }
   .send-btn{
-    position: absolute;
-    bottom: 0;
-    right: 0;
     border: 1px solid #EA08FF;
     background-color: #EA08FF;
 
