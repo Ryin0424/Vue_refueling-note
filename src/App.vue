@@ -15,6 +15,7 @@
 
     <transition name="fade">
       <Create v-if="createNew"
+              :lastKM="sortArray[0].km"
               @closeCreate="closeCreate" />
       <!-- <inputForm @childMethod="receiveSubmit" v-if="createNew" /> -->
     </transition>
@@ -136,12 +137,12 @@ $dark-main-color: #091955;
     top: 50px;
     height: 85vh;
     overflow: hidden;
-    transition: all ease 1s;
+    transition: all ease .8s;
     border-collapse: separate;
     border-radius: 30px;
     .top-menu{
       border-radius: 30px;
-      transition: all ease 1s;
+      transition: all ease .8s;
     }
     .add{
       display: none;

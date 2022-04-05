@@ -131,20 +131,6 @@ li.card-edit{
     }
   }
 }
-li.card-delete{
-  width: 250px;
-  height: 65px;
-  transition: width ease .3s, height ease .6s;
-  span{
-    margin-left: 15px;
-  }
-  .delete-group{
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
-  }
-}
-
 .btn-custom{
   border-radius: 50px;
   width: 50px;

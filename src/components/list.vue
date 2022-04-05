@@ -32,7 +32,7 @@ import CardEdit from '@/views/List/CardEdit.vue';
 import CardDele from '@/views/List/CardDele.vue';
 
 export default {
-  name: 'list',
+  name: 'List',
   props: {
     refuelingList: {
       required: true,
