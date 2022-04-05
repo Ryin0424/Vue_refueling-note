@@ -12,6 +12,13 @@ Vue.use(Vue2TouchEvents, {
   longTapTimeInterval: 400
 })
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {fas} from '@fortawesome/free-solid-svg-icons'
+library.add(fas)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.config.productionTip = false
+
 new Vue({
   render: h => h(App),
 }).$mount('#app')
