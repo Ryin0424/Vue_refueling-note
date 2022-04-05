@@ -5,21 +5,22 @@
       <TopMenu class="top-menu"
                 @toggleMenu="toggleMenu"
                 :open="open" />
-      <div style="padding-top: 40px;">
+      <div class="info-section">
         <img alt="Vue logo" src="./assets/logo.png">
         <!-- <div>Welcomd, guest!</div> -->
-        <inputForm @childMethod="receiveSubmit" style="display:none;" />
+        <!-- <inputForm @childMethod="receiveSubmit" style="display:none;" /> -->
         <list :refuelingList="sortArray" @update="updateInfo"/>
         <button class="add" > + </button>
       </div>
     </div>
-    <Personal class="setting-side" />
+    <Personal class="setting-bg"
+              @closeMenu="toggleMenu"/>
   </div>
 </template>
 
 <script>
 import exPage from '@/components/exPage.vue';
-import inputForm from '@/components/inputForm.vue';
+// import inputForm from '@/components/inputForm.vue';
 import TopMenu from '@/views/Menu.vue';
 import Personal from '@/views/Personal.vue';
 import list from '@/components/list.vue';
@@ -32,12 +33,12 @@ export default {
   components: {
     TopMenu,
     Personal,
-    inputForm,
+    // inputForm,
     list,
   },
   data:() => ({
     refuelingArray: refuelingData,
-    open: false,
+    open: true,
   }),
   computed:{
     sortArray(){
@@ -55,7 +56,6 @@ export default {
   methods:{
     toggleMenu(boolean){
       this.open = boolean
-      console.log('menu', this.open)
     },
     receiveSubmit(data){
       console.log('origin:', this.refuelingArray)
@@ -80,40 +80,60 @@ $dark-main-color: #091955;
   color: #2c3e50;
   margin-top: 30px;
   margin: -8px;
+  height: 100vh;
   overflow: hidden;
+
   .main-side{
     background-color: $dark-main-background-color;
     position: relative;
     right: 0;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
     transition: all ease 1s;
     .top-menu{
       background-color: $dark-main-background-color;
+      transition: all ease 1s;
     }
-    .add{
-      position: fixed;
-      bottom: 30px;
-      right: 15px;
-      background-color: #EA08FF;
-      color: #e2e2e2;
-      width: 50px;
-      height: 50px;
-      font-size: 24px;
-      border-radius: 50%;
-      border: none;
-    }
-    .card{
-      border-radius: 15px;
-      background-color: $dark-main-color;
-      padding: 5px 0;
-      color: #fff;
+    .info-section{
+      padding-top: 40px;
+      .add{
+        position: fixed;
+        bottom: 30px;
+        right: 15px;
+        background-color: #EA08FF;
+        color: #e2e2e2;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        border-radius: 50%;
+        border: none;
+      }
+      .card{
+        border-radius: 15px;
+        background-color: $dark-main-color;
+        padding: 5px 0;
+        color: #fff;
+      }
     }
   }
   .main-side-move{
     right: -320px;
+    top: 50px;
+    height: 85vh;
+    overflow: hidden;
     transition: all ease 1s;
-
+    border-collapse: separate;
+    border-radius: 30px;
+    .top-menu{
+      border-radius: 30px;
+      transition: all ease 1s;
+    }
+    .add{
+      display: none;
+    }
   }
-  .setting-side{
+  .setting-bg{
     background-color: $dark-main-color;
   }
 }

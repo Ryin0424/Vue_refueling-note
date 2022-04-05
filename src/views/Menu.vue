@@ -9,7 +9,6 @@
       <!-- <font-awesome-icon icon="fa-solid fa-bell" /> -->
     </div>
     <!-- <font-awesome-icon icon="fa-solid fa-xmark" /> -->
-    <!-- <font-awesome-icon icon="fa-solid fa-less-than" /> -->
   </div>
 </template>
 
@@ -25,7 +24,6 @@ export default {
   },
   methods:{
     toggleMenu(){
-      console.log('click menu', this.open)
       this.$emit('toggleMenu', !this.open);
     },
   },

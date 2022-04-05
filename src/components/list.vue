@@ -122,6 +122,8 @@ h3 {
 ul {
   list-style-type: none;
   padding: 0;
+  overflow: auto;
+  height: calc(100vh - 250px);
 }
 li.card {
   display: flex;
