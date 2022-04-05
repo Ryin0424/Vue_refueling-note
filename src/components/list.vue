@@ -122,9 +122,19 @@ h3 {
 ul {
   list-style-type: none;
   padding: 0;
-  overflow: auto;
   height: calc(100vh - 250px);
+  overflow: auto;
+  // Firefox
+  scrollbar-width:none;
+  // IE
+  -ms-overflow-style: none;
+  // Chrome & Safari
+  &::-webkit-scrollbar{
+    display: none;
+  }
 }
+
+
 li.card {
   display: flex;
   border: 1px solid gray;
@@ -208,4 +218,5 @@ li.card-delete{
   height: 25px;
   border: none;
 }
+
 </style>
