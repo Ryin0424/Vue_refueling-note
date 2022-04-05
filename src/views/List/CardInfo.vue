@@ -4,8 +4,7 @@
       <div class="title">
         <div class="icon"><font-awesome-icon icon="fa-solid fa-calendar-check" /></div>
         日期
-      </div>
-      {{cardData.date}}
+      </div>{{cardData.date}}
     </div>
     <div class="card-item">
       <div class="title">
