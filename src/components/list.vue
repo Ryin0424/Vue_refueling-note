@@ -2,49 +2,34 @@
   <ul class="list">
     <li v-for="(item, index) in refuelingList" :key="index"
         v-touch:swipe="swipeHandler(index)"
-        @dblclick="editItem(index, item)"
+        @dblclick="editItem(index)"
         class="card"
         :class="[{'card-edit': nowEditing === index}, {'card-delete': nowDeleting === index}]">
-        <div class="info-group" v-show="nowEditing !== index && nowDeleting !== index">
-          <div>日期：{{item.date}}</div>
-          <div>金額：{{item.amount}}</div>
-          <div>加油量：{{item.gasoline}}L</div>
-          <div>當前里程：{{item.km}}</div>
-          <div class="text-green">本次油耗比：{{fuelConsumption(refuelingList, index, item.km, item.gasoline)}} Km/L</div>
-        </div>
-        <div class="form-group" v-show="nowEditing === index">
-          <div class="form-input">
-            日期：<input type="date" v-model="editData.date">
-          </div>
-          <div class="form-input">
-            金額：<input type="number" v-model="editData.amount">
-          </div>
-          <div class="form-input">
-            汽油：<input type="number" step="0.01" v-model="editData.gasoline"> L
-          </div>
-          <div class="form-input">
-            里程：<input type="number" v-model="editData.km"> KM
-          </div>
-          <div class="btn-group edit-group">
-            <button class="btn btn-success" @click.prevent="endEdit(index)" v-show="nowEditing === index">完成</button>
-            <button class="btn btn-github" @click.prevent="clearEdit(index)" v-show="nowEditing === index">取消</button>
-          </div>
-        </div>
-        <div class="" v-show="nowDeleting === index">
-          <font-awesome-icon icon="fa-solid fa-trash-can"/>  <span>確定要刪除此項紀錄嗎？</span>
-          <div class="btn-group delete-group">
-            <button class="btn btn-custom btn-danger" @click.prevent="deleteItem(index)">確定</button>
-            <button class="btn btn-custom btn-success" @click.prevent="cancelDelete">取消</button>
-          </div>
-        </div>
+        <Card-Info :cardData="item"
+                    :refuelingList="listAtComponent"
+                    :index="index"
+                    v-if="nowEditing !== index && nowDeleting !== index" />
+        <Card-Edit :cardData="item"
+                    :refuelingList="listAtComponent"
+                    :index="index"
+                    @updateEdit="listEndEdit"
+                    @clearEdit="clearEdit"
+                    v-if="nowEditing === index" />
+        <Card-Dele :index="index"
+                    @updateDele="deleteItem"
+                    @cancelDelete="cancelDelete"
+                    v-if="nowDeleting === index" />
     </li>
   </ul>
 </template>
 
 
 <script>
-import exPage from './exPage.vue';
-import Calculator from '../mixins/Calculator.js';
+import exPage from '@/components/exPage.vue';
+import Calculator from '@/mixins/Calculator.js';
+import CardInfo from '@/views/List/CardInfo.vue';
+import CardEdit from '@/views/List/CardEdit.vue';
+import CardDele from '@/views/List/CardDele.vue';
 
 export default {
   name: 'list',
@@ -53,6 +38,11 @@ export default {
       required: true,
       type: Array,
     }
+  },
+  components: {
+    CardInfo,
+    CardEdit,
+    CardDele,
   },
   extends: exPage,
   mixins: [
@@ -65,12 +55,12 @@ export default {
     listAtComponent: [],
     nowEditing: null, // 修改中項目的 Array index
     nowDeleting: null, // 進入刪除確認的 Array index
-    editData: {
-      date: '',
-      amount: '',
-      gasoline: '',
-      km: '',
-    },
+    // editData: {
+    //   date: '',
+    //   amount: '',
+    //   gasoline: '',
+    //   km: '',
+    // },
   }),
   methods:{
     swipeHandler (index) {
@@ -88,30 +78,19 @@ export default {
       }.bind(this)
     },
 
-    // swipeHandler (direction) {
-    //   alert(direction)
-    //   console.log(direction)  // May be left / right / top / bottom
-    // },
-
-    editItem(index, item){
+    editItem(index){
       if(this.nowDeleting === index) return;
       this.nowEditing = index
-      this.editData = this.deepClone(item)
+      // this.editData = this.deepClone(item)
     },
 
-    endEdit(index){
-      this.listAtComponent[index] = this.editData
+    listEndEdit(newData, index){
+      this.listAtComponent[index] = newData
       this.dataUpdate(this.listAtComponent)
       this.clearEdit()
     },
 
     clearEdit(){
-      this.editData = {
-        date: '',
-        amount: '',
-        gasoline: '',
-        km: '',
-      }
       this.nowEditing = null
     },
 
