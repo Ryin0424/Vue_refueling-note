@@ -7,7 +7,7 @@
                 alt="avatar"
                 class="user-avatar">
         </div>
-        <div class="back-circle" @click="closeMenu"> <font-awesome-icon icon="fa-solid fa-less-than" /> </div>
+        <div class="circle-btn" @click="closeMenu"> <font-awesome-icon icon="fa-solid fa-less-than" /> </div>
       </div>
       <h1 class="user-name">
         Guest
@@ -87,18 +87,6 @@ $dark-main-color: #091955;
           z-index: -2;
           background-color: #EA08FF;
         }
-      }
-
-      .back-circle {
-        cursor: pointer;
-        border-radius: 50%;
-        height: 40px;
-        width: 40px;
-        border: 2px solid #676767;
-        color: #fff;
-        line-height: 40px;
-        font-size: 16px;
-        text-align: center;
       }
     }
 

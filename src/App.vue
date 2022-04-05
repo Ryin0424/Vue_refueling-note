@@ -8,11 +8,17 @@
       <div class="info-section">
         <img alt="Vue logo" src="./assets/logo.png">
         <!-- <div>Welcomd, guest!</div> -->
-        <!-- <inputForm @childMethod="receiveSubmit" style="display:none;" /> -->
         <list :refuelingList="sortArray" @update="updateInfo"/>
-        <button class="add" > + </button>
+        <button class="add" @click.prevent="addNew"> + </button>
       </div>
     </div>
+
+    <transition name="fade">
+      <Create v-if="createNew"
+              @closeCreate="closeCreate" />
+      <!-- <inputForm @childMethod="receiveSubmit" v-if="createNew" /> -->
+    </transition>
+
     <Personal class="setting-bg"
               @closeMenu="toggleMenu"/>
   </div>
@@ -20,12 +26,11 @@
 
 <script>
 import exPage from '@/components/exPage.vue';
-// import inputForm from '@/components/inputForm.vue';
 import TopMenu from '@/views/Menu.vue';
 import Personal from '@/views/Personal.vue';
+import Create from '@/views/Create.vue';
 import list from '@/components/list.vue';
 import refuelingData from '@/assets/test.json';
-
 
 export default {
   name: 'App',
@@ -33,12 +38,13 @@ export default {
   components: {
     TopMenu,
     Personal,
-    // inputForm,
+    Create,
     list,
   },
   data:() => ({
     refuelingArray: refuelingData,
     open: false,
+    createNew: false,
   }),
   computed:{
     sortArray(){
@@ -65,6 +71,12 @@ export default {
       console.log(data);
       this.refuelingArray = data;
     },
+    addNew(){
+      this.createNew = true;
+    },
+    closeCreate(){
+      this.createNew = false;
+    }
   },
 }
 </script>
@@ -137,6 +149,27 @@ $dark-main-color: #091955;
   }
   .setting-bg{
     background-color: $dark-main-color;
+  }
+
+  .circle-btn {
+    cursor: pointer;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    border: 2px solid #676767;
+    color: #fff;
+    line-height: 40px;
+    font-size: 16px;
+    text-align: center;
+  }
+
+
+  // transition fade
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
   }
 }
 </style>
