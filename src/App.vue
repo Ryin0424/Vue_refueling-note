@@ -38,7 +38,7 @@ export default {
   },
   data:() => ({
     refuelingArray: refuelingData,
-    open: true,
+    open: false,
   }),
   computed:{
     sortArray(){
@@ -89,8 +89,10 @@ $dark-main-color: #091955;
     right: 0;
     top: 0;
     height: 100vh;
+    z-index: 1;
     overflow: hidden;
     transition: all ease 1s;
+
     .top-menu{
       background-color: $dark-main-background-color;
       transition: all ease 1s;
