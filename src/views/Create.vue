@@ -4,7 +4,8 @@
     <div class="circle-btn pull-right" @click="close"> <font-awesome-icon icon="fa-solid fa-xmark" />  </div>
 
     <inputForm :lastKM="lastKM"
-                @getAdd="newRecord" />
+                @getAdd="getNewRecord"
+                @close="addSuccess" />
 
   </div>
 
@@ -27,8 +28,11 @@ export default {
     close(){
       this.$emit('closeCreate');
     },
-    newRecord(data){
-      console.log('get emit', data)
+    getNewRecord(data){
+      this.$emit('receiveSubmit', data);
+    },
+    addSuccess(){
+      this.$emit('closeCreate');
     },
   },
 }

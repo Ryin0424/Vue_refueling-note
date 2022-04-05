@@ -14,7 +14,9 @@
                 <font-awesome-icon icon="fa-solid fa-calendar-days" />
         </button>
       </div>
-      <div class="form-input" v-if="notToday">
+      <div class="form-input"
+            :class="{'has-error': validation.hasError('refuelingForm.date')}"
+            v-if="notToday">
         <label for="date">
           <div class="icon"><font-awesome-icon icon="fa-solid fa-calendar-check" /></div>
           日期
@@ -24,7 +26,8 @@
                 id="date"
                 v-model="refuelingForm.date">
       </div>
-      <div class="form-input">
+      <div class="form-input"
+            :class="{'has-error': validation.hasError('refuelingForm.amount')}">
         <label for="amount">
           <div class="icon"><font-awesome-icon icon="fa-solid fa-dollar-sign" /></div>
           金額
@@ -32,8 +35,10 @@
         <input type="number"
                 id="amount"
                 v-model="refuelingForm.amount">
+        <div class="message">{{ validation.firstError('refuelingForm.amount') }}</div>
       </div>
-      <div class="form-input">
+      <div class="form-input"
+            :class="{'has-error': validation.hasError('refuelingForm.gasoline')}">
         <label for="gasoline">
           <div class="icon"><font-awesome-icon icon="fa-solid fa-gas-pump" /></div>
           汽油
@@ -41,8 +46,10 @@
         <input type="number" step="0.01"
                 id="gasoline"
                 v-model="refuelingForm.gasoline"> L
+        <div class="message">{{ validation.firstError('refuelingForm.gasoline') }}</div>
       </div>
-      <div class="form-input">
+      <div class="form-input"
+            :class="{'has-error': validation.hasError('refuelingForm.km')}">
         <label for="km">
           <div class="icon"><font-awesome-icon icon="fa-solid fa-car-side" /></div>
           里程
@@ -51,6 +58,7 @@
                 :min="lastKM"
                 id="km"
                 v-model="refuelingForm.km"> KM
+        <div class="message">{{ validation.firstError('refuelingForm.km') }}</div>
       </div>
     </div>
     <div class="bottom-side">
@@ -66,6 +74,14 @@
 import exPage from '@/components/exPage.vue';
 import GetDate from '@/mixins/GetDate.js';
 
+const SimpleVueValidation = require("simple-vue-validator");
+const Validator = SimpleVueValidation.Validator.create({
+  templates: {
+    required: "此欄位為必填",
+  }
+});
+
+
 export default {
   name: 'inputForm',
   props: {
@@ -80,12 +96,29 @@ export default {
       date: '',
       amount: '',
       gasoline: '',
-      kilometers: '',
+      km: '',
     },
   }),
   mixins: [
     GetDate
   ],
+  mounted(){
+    this.refuelingForm.date = this.getToday();
+  },
+  validators: {
+    "refuelingForm.date": function(value) {
+      return Validator.value(value).required();
+    },
+    "refuelingForm.amount": function(value) {
+      return Validator.value(value).required();
+    },
+    "refuelingForm.gasoline": function(value) {
+      return Validator.value(value).required();
+    },
+    "refuelingForm.km": function(value) {
+      return Validator.value(value).required().greaterThan(this.lastKM, `至少要大於 ${this.lastKM}`);
+    },
+  },
   methods:{
     setToday(){
       this.notToday = false;
@@ -95,7 +128,15 @@ export default {
       this.notToday = true;
     },
     send(){
-      this.$emit('getAdd', this.refuelingForm)
+      this.$validate().then(async success =>{
+        if (success){
+          this.$emit('getAdd', this.refuelingForm)
+          this.$emit('close')
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      });
     },
   },
 }
@@ -119,6 +160,14 @@ export default {
       justify-content: flex-end;
     }
 
+    .has-error{
+      input{
+        border: 2px solid#ffbc08 !important;
+      }
+      .message{
+        color: #ffbc08;
+      }
+    }
     .form-input{
       margin: 20px 0;
       color: #fff;

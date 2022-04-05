@@ -16,7 +16,8 @@
     <transition name="fade">
       <Create v-if="createNew"
               :lastKM="sortArray[0].km"
-              @closeCreate="closeCreate" />
+              @closeCreate="closeCreate"
+              @receiveSubmit="receiveSubmit" />
       <!-- <inputForm @childMethod="receiveSubmit" v-if="createNew" /> -->
     </transition>
 
@@ -65,6 +66,7 @@ export default {
       this.open = boolean
     },
     receiveSubmit(data){
+      console.log('get', data)
       console.log('origin:', this.refuelingArray)
       this.refuelingArray.push(data)
     },
