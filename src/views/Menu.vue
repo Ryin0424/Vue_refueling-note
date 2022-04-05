@@ -5,7 +5,7 @@
                           @click="toggleMenu" />
     </div>
     <div class="right-side">
-      <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+      <!-- <font-awesome-icon icon="fa-solid fa-magnifying-glass" /> -->
       <!-- <font-awesome-icon icon="fa-solid fa-bell" /> -->
     </div>
   </div>
