@@ -13,7 +13,6 @@
         Guest
       </h1>
       <ul class="options">
-        <li> <div class="back-circle" @click="closeMenu"> <font-awesome-icon icon="fa-solid fa-less-than" /> </div></li>
         <li> <font-awesome-icon icon="fa-solid fa-chart-pie" /> 分析 </li>
         <li> <font-awesome-icon icon="fa-solid fa-chart-column" /> 分析 </li>
         <li> <font-awesome-icon icon="fa-solid fa-gear" /> 設定 </li>
@@ -27,9 +26,7 @@ export default {
   name: 'personal-setting',
   methods:{
     closeMenu(){
-      alert(1)
-      console.log('click close')
-      // this.$emit('closeMenu', false);
+      this.$emit('closeMenu', false);
     },
   },
 }
@@ -41,7 +38,7 @@ $dark-main-color: #091955;
 .setting-bg{
   position: fixed;
   top: 0;
-  z-index: -1;
+  z-index: 0;
   height: 100vh;
   width: 100vw;
   color: #fff;
