@@ -41,6 +41,11 @@ export default {
   position: fixed;
   z-index: 999;
   color: #e2e2e2;
+
+  svg{
+    cursor: pointer;
+  }
+
   .left-side{
     margin-left: 20px;
   }
