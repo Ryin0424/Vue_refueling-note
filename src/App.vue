@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
     <div class="main-side"
         :class="{'main-side-move': open}">
       <Top-Menu class="top-menu"
@@ -34,19 +30,6 @@ export default {
   data:() => ({
     open: false,
   }),
-  computed:{
-    sortArray(){
-      // let ary = this.refuelingArray.map( node => {
-      //   node.inRevise = false;
-      //   return node
-      // })
-      let ary = this.refuelingArray
-      // sort by Obj value
-      // note by https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
-      let newArray = ary.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
-      return newArray.reverse()
-    },
-  },
   methods:{
     toggleMenu(boolean){
       this.open = boolean

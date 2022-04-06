@@ -64,13 +64,10 @@ export default {
   methods:{
     swipeHandler (index) {
       return function(dir) {
-        console.log(dir, index);
+        // console.log(dir, index);
         if (this.nowDeleting !== index && dir === 'left') {
           if (this.nowEditing === index) return;
           this.nowDeleting = index
-          // if (this.nowDeleting === index && dir === 'left') {
-          //   this.deleteItem(index)
-          // }
         } else if (this.nowDeleting === index && dir === 'right') {
           this.nowDeleting = null
         }
@@ -94,7 +91,6 @@ export default {
     },
 
     deleteItem(index){
-      console.log('del', index)
       this.nowDeleting = null
       this.clearEdit()
       this.listAtComponent.splice(index, 1)
@@ -107,7 +103,6 @@ export default {
 
     // 任何在 component 內改動的資料，傳回父層
     dataUpdate(data){
-      console.log('emit')
       this.$emit('update', data)
     },
   },

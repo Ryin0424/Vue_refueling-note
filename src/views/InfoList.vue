@@ -17,7 +17,11 @@
 import exPage from '@/components/exPage.vue';
 import CardList from '@/components/CardList.vue';
 import Create from '@/views/Create.vue';
-import refuelingData from '@/assets/test.json';
+// import refuelingData from '@/assets/test.json';
+import firebase from '@/firebaseInit.js';
+import { getDatabase, ref, onValue, set } from 'firebase/database'
+// import { getDatabase, ref, set, onValue, get, child } from 'firebase/database'
+const db = getDatabase(firebase);
 
 export default {
   name: 'Info-List',
@@ -27,9 +31,12 @@ export default {
     Create,
   },
   data:() => ({
-    refuelingArray: refuelingData,
+    refuelingArray: [],
     createNew: false,
   }),
+  mounted(){
+    this.getRealTimeData();
+  },
   computed:{
     sortArray(){
       // let ary = this.refuelingArray.map( node => {
@@ -44,21 +51,29 @@ export default {
     },
   },
   methods:{
-    updateInfo(data){
-      console.log(data);
-      this.refuelingArray = data;
+    getRealTimeData(){
+      return onValue(ref(db, '/'), (snapshot) => {
+        this.refuelingArray = snapshot.val();
+      }, {
+        onlyOnce: true
+      });
+    },
+    updateInfo(newData){
+      set(ref(db, '/'), newData);
+      this.getRealTimeData();
     },
     addNew(){
       this.createNew = true;
     },
     receiveSubmit(data){
-      console.log('get', data)
-      console.log('origin:', this.refuelingArray)
-      this.refuelingArray.push(data)
+      let newData = this.deepClone(this.refuelingArray).reverse()
+      newData.push(data)
+      set(ref(db, '/'), newData.reverse())
+      this.getRealTimeData();
     },
     closeCreate(){
       this.createNew = false;
-    }
+    },
   },
 }
 </script>

@@ -25,7 +25,9 @@ import SimpleVueValidation from 'simple-vue-validator';
 import router from './router'
 Vue.use(SimpleVueValidation);
 
+
 new Vue({
   router,
+  data: () => ({}),
   render: h => h(App)
 }).$mount('#app')
