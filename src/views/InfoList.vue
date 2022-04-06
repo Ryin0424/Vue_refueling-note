@@ -1,7 +1,8 @@
 <template>
   <div class="info-section">
     <img alt="Vue logo" src="@/assets/logo.png">
-    <Card-List :refuelingList="sortArray" @update="updateInfo"/>
+    <Fake-Card-List v-if="sortArray.length === 0" />
+    <Card-List :refuelingList="sortArray" @update="updateInfo" v-else />
     <button class="add" @click.prevent="addNew"> + </button>
 
     <transition name="fade">
@@ -16,6 +17,7 @@
 <script>
 import exPage from '@/components/exPage.vue';
 import CardList from '@/components/CardList.vue';
+import FakeCardList from '@/components/List/FakeCardList.vue';
 import Create from '@/views/Create.vue';
 // import refuelingData from '@/assets/test.json';
 import firebase from '@/firebaseInit.js';
@@ -27,6 +29,7 @@ export default {
   name: 'Info-List',
   extends: exPage,
   components: {
+    FakeCardList,
     CardList,
     Create,
   },
