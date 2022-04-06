@@ -21,7 +21,7 @@
 
 <script>
 import exPage from '@/components/exPage.vue';
-import TopMenu from '@/views/Menu.vue';
+import TopMenu from '@/views/TopMenu.vue';
 import Personal from '@/views/Personal.vue';
 
 export default {
