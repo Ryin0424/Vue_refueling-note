@@ -89,12 +89,6 @@ li.card {
   background-color: #dd4b39;
   border-color: #d73925;
 }
-a {
-  color: #42b983;
-}
-.text-green{
-  color: #7bf71e;
-}
 
 
 li.card-edit{
