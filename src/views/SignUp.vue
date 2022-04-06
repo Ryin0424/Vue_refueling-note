@@ -1,25 +1,17 @@
 <template>
-  <div class="info-section login">
-    <h3>加油紀錄</h3>
+  <div class="info-section register">
+    <h3>建立一個新帳號吧！</h3>
     <input type="text" v-model="email" placeholder="Email"><br>
     <input type="password" v-model="password" placeholder="Password"><br>
-    <button @click="login">登入</button>
-    <p>還沒有帳號嗎？ 您可以 <router-link to="/sign-up">註冊一個</router-link></p>
-    <!-- <hr/>
-    <div class="user-others">
-      <p>用其他帳號開始</p>
-      <div class="btn-group">
-        <div class="circle-btn yahoo"> <font-awesome-icon icon="fa-brands fa-yahoo" /> </div>
-        <div class="circle-btn github"> <font-awesome-icon icon="fa-brands fa-github" /> </div>
-      </div>
-    </div> -->
+    <button @click="register">註冊</button>
+    <p>或返回 <router-link to="/login">登入</router-link></p>
   </div>
 </template>
 
 <script>
   // import firebase from 'firebase';
   export default {
-    name: 'login',
+    name: 'SignUp',
     data() {
       return {
         email: 'guest@mail.com',
@@ -27,7 +19,7 @@
       }
     },
     methods: {
-      login(){
+      register(){
         console.log('click')
       },
       // login: function() {
@@ -47,10 +39,10 @@
 <style lang="scss" scoped>
 $dark-main-color: #091955;
 #app{
-  .login {
+  .register {
     background-color: #091955;
     width: 250px;
-    height: 400px;
+    height: 300px;
     padding: 30px;
     margin: 60px auto;
     border-radius: 30px;
@@ -86,22 +78,6 @@ $dark-main-color: #091955;
       cursor: pointer;
       color: #7bf71e;
     }
-  }
-
-  .btn-group{
-    display: flex;
-    justify-content: center;
-
-    .circle-btn{
-      font-size: 22px;
-      margin: 0 5px;
-    }
-  }
-  .yahoo{
-    background-color: #6000D2;
-  }
-  .github{
-    background-color: #222;
   }
 }
 </style>
