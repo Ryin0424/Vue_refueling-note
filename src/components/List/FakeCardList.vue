@@ -44,13 +44,25 @@
 </template>
 
 <style lang="scss" scoped>
-.info-group{
-  margin: auto 0;
-}
-.card-item{
-  background-color: #b5b5b578;
-  height: 10px;
-  margin: 15px 0;
-  border-radius: 15px;
+li.card {
+  display: flex;
+  border: 1px solid gray;
+  justify-content: center;
+  width: 355px;
+  height: 120px;
+  margin: 15px auto;
+  text-align: start;
+  transition: width ease .3s, height ease .6s;
+  position: relative;
+  overflow: hidden;
+  .info-group{
+    margin: auto 0;
+  }
+  .card-item{
+    background-color: #b5b5b578;
+    height: 10px;
+    margin: 15px 0;
+    border-radius: 15px;
+  }
 }
 </style>
