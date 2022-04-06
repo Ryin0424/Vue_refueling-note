@@ -2,20 +2,24 @@
   <div>
     <div class="setting-side">
       <div class="user-info">
-        <div class="user-avatar" style="margin: 40px 0 25px 0;">
-          <img src="https://drcinc.org/wp-content/uploads/2017/05/vagmAzMznjBJGQf_sumV.gif"
-                alt="avatar"
-                class="user-avatar">
-        </div>
+        <router-link to="/login">
+          <div class="user-avatar" style="margin: 40px 0 25px 0;">
+            <img src="https://drcinc.org/wp-content/uploads/2017/05/vagmAzMznjBJGQf_sumV.gif"
+                  alt="avatar"
+                  class="user-avatar">
+          </div>
+        </router-link>
         <div class="circle-btn" @click="closeMenu"> <font-awesome-icon icon="fa-solid fa-less-than" /> </div>
       </div>
       <h1 class="user-name">
         Guest
       </h1>
       <ul class="options">
+        <router-link to="/"> <li> <font-awesome-icon icon="fa-solid fa-list" /> 紀錄小卡 </li> </router-link>
         <li> <font-awesome-icon icon="fa-solid fa-chart-pie" /> 分析 </li>
         <li> <font-awesome-icon icon="fa-solid fa-chart-column" /> 分析 </li>
-        <li> <font-awesome-icon icon="fa-solid fa-gear" /> 設定 </li>
+        <router-link to="/setting"> <li> <font-awesome-icon icon="fa-solid fa-gear" /> 設定 </li> </router-link>
+
       </ul>
     </div>
   </div>
@@ -94,6 +98,11 @@ $dark-main-color: #091955;
       list-style: none;
       line-height: 50px;
       padding-left: 0;
+
+      a{
+        color: #fff;
+        text-decoration: none;
+      }
 
       li{
         svg{

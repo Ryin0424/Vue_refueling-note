@@ -27,9 +27,9 @@
 <script>
 import exPage from '@/components/exPage.vue';
 import Calculator from '@/mixins/Calculator.js';
-import CardInfo from '@/views/List/CardInfo.vue';
-import CardEdit from '@/views/List/CardEdit.vue';
-import CardDele from '@/views/List/CardDele.vue';
+import CardInfo from '@/components/List/CardInfo.vue';
+import CardEdit from '@/components/List/CardEdit.vue';
+import CardDele from '@/components/List/CardDele.vue';
 
 export default {
   name: 'List',

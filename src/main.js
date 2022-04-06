@@ -22,8 +22,10 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
 import SimpleVueValidation from 'simple-vue-validator';
+import router from './router'
 Vue.use(SimpleVueValidation);
 
 new Vue({
-  render: h => h(App),
+  router,
+  render: h => h(App)
 }).$mount('#app')

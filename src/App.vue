@@ -1,25 +1,18 @@
 <template>
   <div id="app">
+    <!-- <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </div> -->
     <div class="main-side"
         :class="{'main-side-move': open}">
-      <TopMenu class="top-menu"
+      <Top-Menu class="top-menu"
                 @toggleMenu="toggleMenu"
                 :open="open" />
-      <div class="info-section">
-        <img alt="Vue logo" src="./assets/logo.png">
-        <!-- <div>Welcomd, guest!</div> -->
-        <list :refuelingList="sortArray" @update="updateInfo"/>
-        <button class="add" @click.prevent="addNew"> + </button>
-      </div>
+      <transition name="fade">
+        <router-view />
+      </transition>
     </div>
-
-    <transition name="fade">
-      <Create v-if="createNew"
-              :lastKM="sortArray[0].km"
-              @closeCreate="closeCreate"
-              @receiveSubmit="receiveSubmit" />
-      <!-- <inputForm @childMethod="receiveSubmit" v-if="createNew" /> -->
-    </transition>
 
     <Personal class="setting-bg"
               @closeMenu="toggleMenu"/>
@@ -30,9 +23,6 @@
 import exPage from '@/components/exPage.vue';
 import TopMenu from '@/views/Menu.vue';
 import Personal from '@/views/Personal.vue';
-import Create from '@/views/Create.vue';
-import list from '@/components/list.vue';
-import refuelingData from '@/assets/test.json';
 
 export default {
   name: 'App',
@@ -40,13 +30,9 @@ export default {
   components: {
     TopMenu,
     Personal,
-    Create,
-    list,
   },
   data:() => ({
-    refuelingArray: refuelingData,
     open: false,
-    createNew: false,
   }),
   computed:{
     sortArray(){
@@ -65,21 +51,6 @@ export default {
     toggleMenu(boolean){
       this.open = boolean
     },
-    receiveSubmit(data){
-      console.log('get', data)
-      console.log('origin:', this.refuelingArray)
-      this.refuelingArray.push(data)
-    },
-    updateInfo(data){
-      console.log(data);
-      this.refuelingArray = data;
-    },
-    addNew(){
-      this.createNew = true;
-    },
-    closeCreate(){
-      this.createNew = false;
-    }
   },
 }
 </script>
@@ -114,24 +85,6 @@ $dark-main-color: #091955;
     }
     .info-section{
       padding-top: 40px;
-      .add{
-        position: fixed;
-        bottom: 30px;
-        right: 15px;
-        background-color: #EA08FF;
-        color: #e2e2e2;
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-        border-radius: 50%;
-        border: none;
-      }
-      .card{
-        border-radius: 15px;
-        background-color: $dark-main-color;
-        padding: 5px 0;
-        color: #fff;
-      }
     }
   }
   .main-side-move{
@@ -174,5 +127,6 @@ $dark-main-color: #091955;
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
   }
+
 }
 </style>
