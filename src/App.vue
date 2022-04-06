@@ -5,9 +5,9 @@
       <Top-Menu class="top-menu"
                 @toggleMenu="toggleMenu"
                 :open="open" />
-      <transition name="fade">
+      <!-- <transition name="fade"> -->
         <router-view />
-      </transition>
+      <!-- </transition> -->
     </div>
 
     <Personal class="setting-bg"
@@ -30,6 +30,11 @@ export default {
   data:() => ({
     open: false,
   }),
+  watch:{
+    $route(){
+      this.open = false;
+    },
+  },
   methods:{
     toggleMenu(boolean){
       this.open = boolean

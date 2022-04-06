@@ -15,7 +15,7 @@
         Guest
       </h1>
       <ul class="options">
-        <router-link to="/"> <li> <font-awesome-icon icon="fa-solid fa-list" /> 紀錄小卡 </li> </router-link>
+        <router-link to="/"> <li> <font-awesome-icon icon="fa-solid fa-list" /> 紀錄 </li> </router-link>
         <li> <font-awesome-icon icon="fa-solid fa-chart-pie" /> 分析 </li>
         <li> <font-awesome-icon icon="fa-solid fa-chart-column" /> 分析 </li>
         <router-link to="/setting"> <li> <font-awesome-icon icon="fa-solid fa-gear" /> 設定 </li> </router-link>
