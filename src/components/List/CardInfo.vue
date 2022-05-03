@@ -16,19 +16,16 @@
       <div class="title">
         <div class="icon"><font-awesome-icon icon="fa-solid fa-gas-pump" /></div>
         加油量
-      </div>
-      {{cardData.gasoline}} L
+      </div>{{cardData.gasoline}} L
     </div>
     <div class="card-item">
       <div class="title">
         <div class="icon"><font-awesome-icon icon="fa-solid fa-car-side" /></div>
         目前里程
-      </div>
-      {{cardData.km}}
+      </div>{{cardData.km}}
     </div>
     <div class="card-item text-green">
-      <div class="title">本次油耗比</div>
-      {{fuelConsumption(refuelingList, index, cardData.km, cardData.gasoline)}} Km/L</div>
+      <div class="title">本次油耗比</div>{{fuelConsumption(refuelingList, index, cardData.km, cardData.gasoline)}} Km/L</div>
   </div>
 </template>
 
@@ -87,6 +84,7 @@ li.card {
 .icon{
   width: 20px;
   display: inline-block;
+  text-align: center;
 }
 .text-green{
   color: #7bf71e;

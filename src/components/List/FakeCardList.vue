@@ -44,6 +44,20 @@
 </template>
 
 <style lang="scss" scoped>
+ul {
+  list-style-type: none;
+  padding: 0;
+  height: calc(100vh - 250px);
+  overflow: auto;
+  // Firefox
+  scrollbar-width:none;
+  // IE
+  -ms-overflow-style: none;
+  // Chrome & Safari
+  &::-webkit-scrollbar{
+    display: none;
+  }
+}
 li.card {
   display: flex;
   border: 1px solid gray;

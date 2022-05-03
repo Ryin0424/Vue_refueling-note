@@ -1,8 +1,10 @@
 <template>
   <div class="info-section">
     <img alt="Vue logo" src="@/assets/logo.png">
-    <Fake-Card-List v-if="sortArray.length === 0" />
-    <Card-List :refuelingList="sortArray" @update="updateInfo" v-else />
+    <transition name="fade">
+      <Fake-Card-List v-if="sortArray.length === 0" />
+      <Card-List :refuelingList="sortArray" @update="updateInfo" v-else />
+    </transition>
     <button class="add" @click.prevent="addNew"> + </button>
 
     <transition name="fade">
@@ -16,7 +18,7 @@
 
 <script>
 import exPage from '@/components/exPage.vue';
-import CardList from '@/components/CardList.vue';
+import CardList from '@/components/List/CardList.vue';
 import FakeCardList from '@/components/List/FakeCardList.vue';
 import Create from '@/views/Create.vue';
 // import refuelingData from '@/assets/test.json';
@@ -54,9 +56,9 @@ export default {
     },
   },
   methods:{
-    getRealTimeData(){
-      return onValue(ref(db, '/'), (snapshot) => {
-        this.refuelingArray = snapshot.val();
+    async getRealTimeData(){
+      return await onValue(ref(db, '/'), (snapshot) => {
+        setTimeout(() => {this.refuelingArray = snapshot.val();}, 500);
       }, {
         onlyOnce: true
       });
