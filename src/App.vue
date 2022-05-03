@@ -65,11 +65,11 @@ $dark-main-color: #091955;
     height: 100vh;
     z-index: 1;
     overflow: hidden;
-    transition: all ease 1s;
+    transition: all ease .8s;
 
     .top-menu{
       background-color: $dark-main-background-color;
-      transition: all ease 1s;
+      transition: all ease .8s;
     }
     .info-section{
       padding-top: 40px;
